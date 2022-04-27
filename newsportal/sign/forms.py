@@ -1,12 +1,12 @@
 from allauth.account.forms import SignupForm
-from django.contrib.auth.models import Group, User
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import Group
 
 
 class BasicSignupForm(SignupForm):
 
     def save(self, request):
-        user = super(BasicSignupForm, self).save(request)
+        user = super(BasicSignupForm, self)
         basic_group = Group.objects.get(name='common')
         basic_group.user_set.add(user)
-        return user
+        return user.save(request)
+

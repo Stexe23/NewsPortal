@@ -68,7 +68,6 @@ ROOT_URLCONF = 'newsportal.urls'
 
 SITE_ID = 1
 
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -85,12 +84,20 @@ TEMPLATES = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
 
-LOGIN_URL = '/sign/login/'
-LOGIN_REDIRECT_URL = '/news/'
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
 
 WSGI_APPLICATION = 'newsportal.wsgi.application'
 
+ACCOUNT_FORMS = {'signup': 'sign.forms.BasicSignupForm'}
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
@@ -146,3 +153,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATICFILES_DIR = os.path.join(BASE_DIR, "static")
+
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_VERIFICATION = 'none'
