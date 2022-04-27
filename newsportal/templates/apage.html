@@ -8,6 +8,9 @@
 
 {% block content %}
 <h3>{{ flatpage.content }}</h3>
+<button> <a href="/logout/">Выйти</a> </button>
+{% if not is_not_authors %}
+<button> <a href="/upgrade/"> Хочу Premium!</a> </button>
+{% endif %}
 
-<button> <a href="sign/upgrade/"> Хочу Premium!</a> </button>
 {% endblock content %}

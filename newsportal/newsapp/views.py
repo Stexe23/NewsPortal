@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
@@ -36,23 +37,22 @@ class NewsDetail(DetailView):
     context_object_name = 'new'
 
 
-class NewsCreate(CreateView):
+class NewsCreate(PermissionRequiredMixin, CreateView):
     form_class = NewsForm
     model = Post
-    template_name = 'newsapp/news_edit.html'
+    permission_required = ('news.add_post',)
 
 
-class NewsUpdate(UpdateView):
+class NewsUpdate(PermissionRequiredMixin, UpdateView):
     form_class = NewsForm
     model = Post
-    template_name = 'newsapp/news_edit.html'
 
 
-class NewsDelete(DeleteView):
+class NewsDelete(PermissionRequiredMixin, DeleteView):
     model = Post
     queryset = Post.objects.all()
-    template_name = 'newsapp/news_delete.html'
     success_url = reverse_lazy('news')
+    permission_required = ('new.delete_post',)
 
 
 class ArticlesList(ListView):
@@ -77,21 +77,24 @@ class ArticlesDetail(DetailView):
     context_object_name = 'article'
 
 
-class ArticlesCreate(CreateView):
+class ArticlesCreate(PermissionRequiredMixin, CreateView):
     form_class = ArticlesForm
     model = Category
-    template_name = 'newsapp/articles_edit.html'
     success_url = reverse_lazy('articles')
 
 
-class ArticlesUpdate(UpdateView):
+class ArticlesUpdate(PermissionRequiredMixin, UpdateView):
     form_class = ArticlesForm
     model = Category
-    template_name = 'newsapp/articles_edit.html'
+    permission_required = ('article.change_category',)
+
+    def get_object(self, **kwargs):
+        id = self.kwargs.get('pk')
+        return Category.objects.get(pk=id)
 
 
-class ArticlesDelete(DeleteView):
+class ArticlesDelete(PermissionRequiredMixin, DeleteView):
     model = Category
-    template_name = 'newsapp/articles_delete.html'
     success_url = reverse_lazy('articles')
+    permission_required = ('article.delete_category',)
 

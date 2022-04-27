@@ -3,10 +3,4 @@ from django.contrib.auth.models import Group
 
 
 class BasicSignupForm(SignupForm):
-
-    def save(self, request):
-        user = super(BasicSignupForm, self)
-        basic_group = Group.objects.get(name='common')
-        basic_group.user_set.add(user)
-        return user.save(request)
-
+    pass
