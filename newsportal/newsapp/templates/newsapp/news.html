@@ -1,0 +1,38 @@
+{% extends 'newsportal/index.html' %}
+{% load custom_filters %}
+{% load custom_tags %}
+
+{% block content %}
+
+{% for x in news %}
+<a href="{{ x.get_absolute_url }}"><h2 style="text-align: left;">
+    <span style="color: #0000ff;">{{ x.title|censor }}</span></h2></a>
+<h4 style="text-align: left;"><span style="background-color: #99ccff;">{{ x.dateCreation }}</span></h4>
+<p style="text-align: left;"><span style="color: #000000;">{{ x.preview }}</span></p>
+{% endfor %}
+{# Добавляем пагинацию на страницу #}
+
+   {# Информация о предыдущих страницах #}
+   {% if page_obj.has_previous %}
+       <a href="?page=1">1</a>
+       {% if page_obj.previous_page_number != 1 %}
+           ...
+           <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+       {% endif %}
+   {% endif %}
+
+   {# Информация о текущей странице #}
+   {{ page_obj.number }}
+
+   {# Информация о следующих страницах #}
+   {% if page_obj.has_next %}
+       <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+       {% if paginator.num_pages != page_obj.next_page_number %}
+           ...
+           <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+       {% endif %}
+   {% endif %}
+<p></p>
+<button> <a href="/create/">Создать</a> </button>
+
+{% endblock content %}

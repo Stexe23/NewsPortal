@@ -1,0 +1,13 @@
+{% extends 'newsportal/index.html' %}
+{% load custom_tags %}
+{% load custom_filters %}
+
+{% block title %}
+<p></p>
+{% for x in articles %}
+<a href="{{ x.get_absolute_url }}"><h2 style="text-align: left;">
+    <span style="color: #0000ff;">{{ x.name }}</span></h2></a>
+{% endfor %}
+<p></p>
+<button> <a href="create/">Создать</a> </button>
+{% endblock title %}

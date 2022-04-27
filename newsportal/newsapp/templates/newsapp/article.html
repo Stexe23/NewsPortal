@@ -1,0 +1,11 @@
+{% extends 'newsportal/index.html' %}
+{% load custom_tags %}
+{% load custom_filters %}
+
+{% block title %}
+<h2 style="text-align: left;"><span style="color: #0000ff;">{{ article.name|censor }}</span></h2>
+
+<button> <a href="{{request.path}}/edit/">Редактировать</a> </button>
+
+<button> <a href="{{request.path}}/delete/">Удалить</a> </button>
+{% endblock title %}

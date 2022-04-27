@@ -1,0 +1,13 @@
+{% extends 'newsportal/index.html' %}
+{% load custom_tags %}
+{% load custom_filters %}
+
+{% block title %}
+<h2 style="text-align: left;"><span style="color: #0000ff;">{{ new.title|censor }}</span></h2>
+<h4 style="text-align: left;"><span style="background-color: #99ccff;">{{ new.dateCreation|date:'d M Y' }}</span></h4>
+<p style="text-align: left;"><span style="color: #000000;">{{ new.text|censor }}</span></p>
+
+<button> <a href="{{request.path}}/edit/">Редактировать</a> </button>
+
+<button> <a href="{{request.path}}/delete/">Удалить</a> </button>
+{% endblock title %}

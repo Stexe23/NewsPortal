@@ -1,0 +1,11 @@
+{% extends 'newsportal/index.html' %}
+
+{% block content %}
+<h1>Артикли/Теги</h1>
+<hr>
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Save" />
+</form>
+{% endblock content %}
