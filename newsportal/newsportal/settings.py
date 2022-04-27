@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'newsapp',
     'django_filters',
     'sign',
+    'users',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -67,6 +68,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'newsportal.urls'
 
 SITE_ID = 1
+AUTH_USER_MODEL = 'users.UserProfile'
 
 TEMPLATES = [
     {
@@ -93,7 +95,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = "/accounts/profile/"
 
 WSGI_APPLICATION = 'newsportal.wsgi.application'
 
