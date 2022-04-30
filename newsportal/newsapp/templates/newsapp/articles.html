@@ -5,9 +5,9 @@
 {% block title %}
 <p></p>
 {% for x in articles %}
-<a href="{{ x.get_absolute_url }}"><h2 style="text-align: left;">
-    <span style="color: #0000ff;">{{ x.name }}</span></h2></a>
+<a href="{{ x.get_absolute_url }}"><h3 style="text-align: left;">
+    <span style="color: #0000ff;">{{ x.name|censor }}</span></h3></a>
 {% endfor %}
 <p></p>
-<button> <a href="create/">Создать</a> </button>
+<button> <a href="/createA/">Создать</a> </button>
 {% endblock title %}

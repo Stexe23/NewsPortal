@@ -40,25 +40,27 @@ class NewsDetail(DetailView):
 class NewsCreate(PermissionRequiredMixin, CreateView):
     form_class = NewsForm
     model = Post
-    permission_required = ('news.add_post',)
+    permission_required = ('post.add_news',)
 
 
 class NewsUpdate(PermissionRequiredMixin, UpdateView):
     form_class = NewsForm
     model = Post
+    permission_required = ('post.change_news',)
 
 
 class NewsDelete(PermissionRequiredMixin, DeleteView):
     model = Post
     queryset = Post.objects.all()
     success_url = reverse_lazy('news')
-    permission_required = ('new.delete_post',)
+    permission_required = ('post.delete_news',)
 
 
 class ArticlesList(ListView):
     model = Category
     context_object_name = 'articles'
     queryset = Category.objects.all()
+
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -77,24 +79,25 @@ class ArticlesDetail(DetailView):
     context_object_name = 'article'
 
 
-class ArticlesCreate(PermissionRequiredMixin, CreateView):
+class ArticlesCreate( CreateView):
+   # success_url = reverse_lazy('category.add_articles')
     form_class = ArticlesForm
     model = Category
-    success_url = reverse_lazy('articles')
 
 
 class ArticlesUpdate(PermissionRequiredMixin, UpdateView):
+    permission_required = ('category.change_articles',)
     form_class = ArticlesForm
     model = Category
-    permission_required = ('article.change_category',)
 
     def get_object(self, **kwargs):
-        id = self.kwargs.get('pk')
-        return Category.objects.get(pk=id)
+        id_ = self.kwargs.get('pk')
+        return Category.objects.get(pk=id_)
 
 
 class ArticlesDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = ('category.delete_articles',)
     model = Category
     success_url = reverse_lazy('articles')
-    permission_required = ('article.delete_category',)
+
 

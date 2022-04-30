@@ -11,7 +11,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 class BaseRegisterView(CreateView):
     model = User
     form_class = BaseRegisterForm
-    success_url = '/'
+    success_url = '/news/'
 
 
 @login_required
@@ -26,12 +26,15 @@ def upgrade_me(request):
 class IndexView(LoginRequiredMixin, TemplateView):
     template_name = '/news/'
 
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['is_not_authors'] = not self.request.User.groups.filter(name='authors').exists()
-        return context
+@method_decorator(login_required)
+def dispatch(self, request, *args, **kwargs):
+    return super().dispatch(request, *args, **kwargs)
+
+
+def get_context_data(self, **kwargs):
+    context = super().get_context_data(**kwargs)
+    context['is_not_authors'] = not self.request.User.groups.filter(name='authors').exists()
+    context['is_authors'] = self.request.User.groups.filter(name='authors').exists()
+    return context
 
