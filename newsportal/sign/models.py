@@ -25,3 +25,4 @@ class BaseRegisterForm(UserCreationForm):
         basic_group.user_set.add(user)
         print('Custom group works!')
         return user
+

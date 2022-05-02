@@ -92,3 +92,11 @@ class Comment(models.Model):
     def dislike(self):
         self.commentRating -= 1
         self.save()
+
+
+class SubscribersToCategory(models.Model):
+    subscriber = models.ForeignKey(User, on_delete=models.CASCADE)
+    categoryThrough = models.ForeignKey(Category, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return '{user}: {category}'.format(user=self.subscriber, category=self.categoryThrough)

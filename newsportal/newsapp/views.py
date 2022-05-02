@@ -1,6 +1,7 @@
 import requests
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.models import Group, Permission
@@ -131,3 +132,15 @@ def group_gains_perms(request, group_name):
     group = get_object_or_404(Group, name='authors')
     group.has_perm('news.add_post', 'news.change_post', 'news.delete_post')
     return requests.request(group)
+
+
+@login_required
+def add_subscribe(request, pk):
+    user = request.user
+    category_object = PostCategory.objects.get(postThrough=pk)
+    category_object_name = category_object.categoryThrough
+    category = Category.objects.get(name=category_object_name)
+    subscribe = SubscribersToCategory(id_user=user, id_category=category)
+    subscribe.save()
+    return redirect('/')
+

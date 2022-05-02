@@ -38,3 +38,4 @@ def get_context_data(self, **kwargs):
     context['is_authors'] = self.request.User.groups.filter(name='authors').exists()
     return context
 
+
