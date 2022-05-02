@@ -1,6 +1,10 @@
-from django.contrib.auth.mixins import PermissionRequiredMixin
+import requests
+from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.models import Group, Permission
+from django.contrib.contenttypes.models import ContentType
 
 from .forms import *
 from .models import *
@@ -40,27 +44,26 @@ class NewsDetail(DetailView):
 class NewsCreate(PermissionRequiredMixin, CreateView):
     form_class = NewsForm
     model = Post
-    permission_required = ('post.add_news',)
+    permission_required = ('news.add_post',)
 
 
 class NewsUpdate(PermissionRequiredMixin, UpdateView):
     form_class = NewsForm
     model = Post
-    permission_required = ('post.change_news',)
+    permission_required = ('news.change_post',)
 
 
 class NewsDelete(PermissionRequiredMixin, DeleteView):
     model = Post
     queryset = Post.objects.all()
     success_url = reverse_lazy('news')
-    permission_required = ('post.delete_news',)
+    permission_required = ('news.delete_post',)
 
 
 class ArticlesList(ListView):
     model = Category
     context_object_name = 'articles'
     queryset = Category.objects.all()
-
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -101,3 +104,30 @@ class ArticlesDelete(PermissionRequiredMixin, DeleteView):
     success_url = reverse_lazy('articles')
 
 
+def group_gains_perms(request, group_name):
+    group = get_object_or_404(Group, name='authors')
+    group.has_perm('news.add_post', 'news.change_post', 'news.delete_post')
+    content_type = ContentType.objects.get_for_model(Post)
+    perm_c = Permission.objects.get(
+        codename='news.add_post',
+        name='Create news',
+        content_type=content_type,
+    )
+
+    perm_e = Permission.objects.get(
+        codename='news.change_post',
+        name='Edit news',
+        content_type=content_type,
+    )
+
+    perm_d = Permission.objects.create(
+        codename='news.delete_post',
+        name='Edit news',
+        content_type=content_type,
+    )
+
+    group.group_permissions.add(perm_c, perm_e, perm_d)
+    group.has_perm('news.add_post', 'news.change_post', 'news.delete_post')
+    group = get_object_or_404(Group, name='authors')
+    group.has_perm('news.add_post', 'news.change_post', 'news.delete_post')
+    return requests.request(group)

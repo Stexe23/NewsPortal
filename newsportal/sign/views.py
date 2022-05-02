@@ -11,7 +11,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 class BaseRegisterView(CreateView):
     model = User
     form_class = BaseRegisterForm
-    success_url = '/news/'
+    success_url = '/apage/'
 
 
 @login_required
@@ -24,7 +24,7 @@ def upgrade_me(request):
 
 
 class IndexView(LoginRequiredMixin, TemplateView):
-    template_name = '/news/'
+    template_name = 'newsportal/index.html'
 
 
 @method_decorator(login_required)

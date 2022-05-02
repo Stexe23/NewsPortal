@@ -10,7 +10,6 @@ class NewsForm(forms.ModelForm):
         model = Post
         fields = (
             'title',
-            'author',
             'categoryType',
             'postCategory',
             'text',
