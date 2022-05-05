@@ -4,11 +4,10 @@
 
 {% block title %}
 <p></p>
+{% if user.is_authenticated %}
 {% for x in articles %}
-<a href="{{ x.get_absolute_url }}"><h3 style="text-align: left;">
+<a href="#"><h3 style="text-align: left;">
     <span style="color: #0000ff;">{{ x.name|censor }}</span></h3></a>
-<a href="{% url 'subscribe' x.id %}">Подписаться</a>
 {% endfor %}
-<p></p>
-<button> <a href="/createA/">Создать</a> </button>
+{% endif %}
 {% endblock title %}

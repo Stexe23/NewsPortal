@@ -136,11 +136,8 @@ def group_gains_perms(request, group_name):
 
 @login_required
 def add_subscribe(request, pk):
-    user = request.user
-    category_object = PostCategory.objects.get(postThrough=pk)
-    category_object_name = category_object.categoryThrough
-    category = Category.objects.get(name=category_object_name)
-    subscribe = SubscribersToCategory(id_user=user, id_category=category)
-    subscribe.save()
-    return redirect('/')
-
+    a = request.user
+    a.save()
+    b = Category.objects.get(id=pk)
+    b.subscribers.add(a)
+    return redirect('/subscribers/')

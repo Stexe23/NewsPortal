@@ -26,6 +26,7 @@ class Author(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=64, unique=True)
+    subscribers = models.ManyToManyField(User, blank=True, related_name='subscribers')
 
     def get_absolute_url(self):
         return reverse('article', kwargs={'pk': self.pk})
@@ -94,9 +95,3 @@ class Comment(models.Model):
         self.save()
 
 
-class SubscribersToCategory(models.Model):
-    subscriber = models.ForeignKey(User, on_delete=models.CASCADE)
-    categoryThrough = models.ForeignKey(Category, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return '{user}: {category}'.format(user=self.subscriber, category=self.categoryThrough)
