@@ -7,10 +7,15 @@
 
 
 {% block content %}
-<h3>{{ flatpage.content }}</h3>
+<h3>{{ flatpage.content }}:</h3>
+<h2>{{ user.username }}</h2>
+
 <button> <a href="/articles/">Подписаться</a> </button>
+<p></p>
 <button> <a href="/subscribers/">Подписки</a> </button>
+<p></p>
 <button> <a href="/logout/">Выйти</a> </button>
+<p></p>
 {% if not is_not_authors %}
 <button> <a href="/upgrade/"> Хочу Premium!</a> </button>
 {% endif %}

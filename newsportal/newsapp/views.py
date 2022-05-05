@@ -1,8 +1,10 @@
 import requests
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin
-from django.shortcuts import get_object_or_404, redirect
+from django.core.mail import send_mail
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
@@ -83,8 +85,8 @@ class ArticlesDetail(DetailView):
     context_object_name = 'article'
 
 
-class ArticlesCreate( CreateView):
-   # success_url = reverse_lazy('category.add_articles')
+class ArticlesCreate(CreateView):
+    success_url = reverse_lazy('category.add_articles')
     form_class = ArticlesForm
     model = Category
 
@@ -103,6 +105,25 @@ class ArticlesDelete(PermissionRequiredMixin, DeleteView):
     permission_required = ('category.delete_articles',)
     model = Category
     success_url = reverse_lazy('articles')
+
+
+class PostView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'news.html', {})
+
+    def news_post(self, request, *args, **kwargs):
+        post_ = Post(
+            title=request.POST('title'),
+            category=request.POST('postCategory'),
+            text=request.POST('text')
+        )
+        send_mail(
+            subject=f'{post_.title} {post_.category}',
+            message=post_.text,
+            recipient_list=['stexetest@yandex.ru'],
+        )
+
+        return redirect('post_:post_create')
 
 
 def group_gains_perms(request, group_name):
