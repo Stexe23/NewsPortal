@@ -7,6 +7,8 @@ from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from newsapp.models import Author
+
 
 class BaseRegisterView(CreateView):
     model = User
@@ -19,6 +21,7 @@ def upgrade_me(request):
     user = request.user
     authors_group = Group.objects.get(name='authors')
     if not request.user.groups.filter(name='authors').exists():
+        Author.objects.create(authorUser=user)
         authors_group.user_set.add(user)
     return redirect('/apage/')
 

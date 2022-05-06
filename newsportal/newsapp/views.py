@@ -47,13 +47,13 @@ class NewsDetail(DetailView):
 class NewsCreate(PermissionRequiredMixin, CreateView):
     form_class = NewsForm
     model = Post
-    permission_required = ('news.add_post',)
+    permission_required = ('post.add_news',)
 
 
 class NewsUpdate(PermissionRequiredMixin, UpdateView):
     form_class = NewsForm
     model = Post
-    permission_required = ('news.change_post',)
+    permission_required = ('post.change_news',)
 
 
 class NewsDelete(PermissionRequiredMixin, DeleteView):
@@ -144,7 +144,7 @@ def group_gains_perms(request, group_name):
 
     perm_d = Permission.objects.create(
         codename='news.delete_post',
-        name='Edit news',
+        name='Delit news',
         content_type=content_type,
     )
 

@@ -116,7 +116,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
@@ -136,6 +136,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+ACCOUNT_FORMS = {'signup': 'sign.models.BaseRegisterForm'}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -156,7 +157,7 @@ EMAIL_HOST = 'smtp.yandex.ru'  # адрес сервера Яндекс-почт
 EMAIL_PORT = 465  # порт smtp сервера тоже одинаковый
 EMAIL_HOST_USER = 'stexeserver'  # ваше имя пользователя, например, если ваша почта user@yandex.ru,
 # то сюда надо писать user, иными словами, это всё то что идёт до собаки
-EMAIL_HOST_PASSWORD = '{jg25vyt'  # пароль от почты
+EMAIL_HOST_PASSWORD = 'abaiodzadcfaklix'  # пароль от почты
 EMAIL_USE_SSL = True  # Яндекс использует ssl, подробнее о том, что это, почитайте
 # в дополнительных источниках, но включать его здесь обязательно
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER + '@yandex.ru'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER+'@yandex.ru'

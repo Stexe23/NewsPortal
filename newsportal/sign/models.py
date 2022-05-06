@@ -1,6 +1,7 @@
 from django.contrib.auth.models import Group, User
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from allauth.account.forms import SignupForm
 
 
 class BaseRegisterForm(UserCreationForm):
