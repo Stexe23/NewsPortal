@@ -3,7 +3,8 @@
 {% load custom_tags %}
 
 {% block content %}
-
+<button> <a href="/create/">Создать</a> </button>
+<p></p>
 {% for x in news %}
 <a href="{{ x.get_absolute_url }}"><h2 style="text-align: left;">
     <span style="color: #0000ff;">{{ x.title|censor }}</span></h2></a>
@@ -32,7 +33,5 @@
            <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
        {% endif %}
    {% endif %}
-<p></p>
-<button> <a href="/create/">Создать</a> </button>
 
 {% endblock content %}

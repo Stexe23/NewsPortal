@@ -107,25 +107,6 @@ class ArticlesDelete(PermissionRequiredMixin, DeleteView):
     success_url = reverse_lazy('articles')
 
 
-class PostView(View):
-    def get(self, request, *args, **kwargs):
-        return render(request, 'news.html', {})
-
-    def news_post(self, request, *args, **kwargs):
-        post_ = Post(
-            title=request.POST('title'),
-            category=request.POST('postCategory'),
-            text=request.POST('text')
-        )
-        send_mail(
-            subject=f'{post_.title} {post_.category}',
-            message=post_.text,
-            recipient_list=['stexetest@yandex.ru'],
-        )
-
-        return redirect('post_:post_create')
-
-
 def group_gains_perms(request, group_name):
     group = get_object_or_404(Group, name='authors')
     group.has_perm('news.add_post', 'news.change_post', 'news.delete_post')
