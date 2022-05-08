@@ -1,10 +1,8 @@
 import requests
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import PermissionRequiredMixin, UserPassesTestMixin
-from django.core.mail import send_mail
-from django.shortcuts import get_object_or_404, redirect, render
+from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
@@ -107,6 +105,24 @@ class ArticlesDelete(PermissionRequiredMixin, DeleteView):
     success_url = reverse_lazy('articles')
 
 
+class SubscribersList(ListView):
+    model = Category
+    form_class = ArticlesForm
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        sub = Category.objects.all()
+        us = User.objects.all().values_list("subscribers", flat=True)
+        us_c = Category.objects.all().values_list("subscribers", flat=True)
+        cat = Category.objects.all().values_list('name', "subscribers")
+        print('sub:', sub)
+        print('us:', us)
+        print('us_c:', us_c)
+        print('cat:', cat)
+        context['categories'] = Category.objects.all().values_list('name', "subscribers")
+        return context
+
+
 def group_gains_perms(request, group_name):
     group = get_object_or_404(Group, name='authors')
     group.has_perm('news.add_post', 'news.change_post', 'news.delete_post')
@@ -142,4 +158,14 @@ def add_subscribe(request, pk):
     a.save()
     b = Category.objects.get(id=pk)
     b.subscribers.add(a)
+    return redirect('/subscribers/')
+
+
+@login_required
+def del_subscribe(request, pk):
+    a = request.user
+    a.save()
+    b = Category.objects.all().values_list('subscribers')
+    print(b)
+    b.subscribers.delete(a)
     return redirect('/subscribers/')
