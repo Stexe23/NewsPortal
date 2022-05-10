@@ -15,8 +15,8 @@ urlpatterns = [
          name='articles_edit'),
     path('articles/<int:pk>/delete/', ArticlesDelete.as_view(template_name='newsapp/articles_delete.html'),
          name='articles_delete'),
-    path('<int:pk>/subscribe/', add_subscribe, name='subscribe'),
-    path('<int:pk>/subscribe/', del_subscribe, name='subscribe_d'),
+    path('<int:pk>/add_subscribe/', add_subscribe, name='add_subscribe'),
+    path('<int:pk>/del_subscribe/', del_subscribe, name='del_subscribe'),
     path('subscribers/', SubscribersList.as_view(template_name='newsapp/subscribers.html'),
          name='subscribers')
 ]

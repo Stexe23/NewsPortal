@@ -105,6 +105,18 @@ class ArticlesDelete(PermissionRequiredMixin, DeleteView):
     success_url = reverse_lazy('articles')
 
 
+class AddNews(PermissionRequiredMixin, CreateView):
+    permission_required = ('news.add',)
+
+
+class ChangeNews(PermissionRequiredMixin, UpdateView):
+    permission_required = ('news.edit',)
+
+
+class DeleteNews(PermissionRequiredMixin, DeleteView):
+    permission_required = ('news.delete',)
+
+
 class SubscribersList(ListView):
     model = Category
     form_class = ArticlesForm
@@ -123,35 +135,6 @@ class SubscribersList(ListView):
         return context
 
 
-def group_gains_perms(request, group_name):
-    group = get_object_or_404(Group, name='authors')
-    group.has_perm('news.add_post', 'news.change_post', 'news.delete_post')
-    content_type = ContentType.objects.get_for_model(Post)
-    perm_c = Permission.objects.get(
-        codename='news.add_post',
-        name='Create news',
-        content_type=content_type,
-    )
-
-    perm_e = Permission.objects.get(
-        codename='news.change_post',
-        name='Edit news',
-        content_type=content_type,
-    )
-
-    perm_d = Permission.objects.create(
-        codename='news.delete_post',
-        name='Delit news',
-        content_type=content_type,
-    )
-
-    group.group_permissions.add(perm_c, perm_e, perm_d)
-    group.has_perm('news.add_post', 'news.change_post', 'news.delete_post')
-    group = get_object_or_404(Group, name='authors')
-    group.has_perm('news.add_post', 'news.change_post', 'news.delete_post')
-    return requests.request(group)
-
-
 @login_required
 def add_subscribe(request, pk):
     a = request.user
@@ -162,10 +145,8 @@ def add_subscribe(request, pk):
 
 
 @login_required
-def del_subscribe(request, pk):
-    a = request.user
-    a.save()
-    b = Category.objects.all().values_list('subscribers')
-    print(b)
-    b.subscribers.delete(a)
+def del_subscribe(request, **kwargs):
+    pk = request.GET.get('pk', )
+    print('Пользователь', request.user, 'удален из подписчиков категории:', Category.objects.get(pk=pk))
+    Category.objects.get(pk=pk).subscribers.remove(request.user)
     return redirect('/subscribers/')
