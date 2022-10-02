@@ -1,15 +1,11 @@
-import requests
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.contrib.auth.models import Group, Permission
-from django.contrib.contenttypes.models import ContentType
 
 from .forms import *
 from .models import *
 from .filters import NewsFilter, ArticleFilter
+
 
 
 class NewsList(ListView):
